@@ -10,10 +10,12 @@ class App extends Component{
     super(props);
     this.state={
       data:[
-        {id:"0",name:"John Smith", salary:"1000", increase:false, rise:false},
-        {id:"1",name:"Anna Jonson", salary:"700", increase:false, rise:false},
+        {id:"0",name:"John Smith", salary:"1000", increase:true, rise:false},
+        {id:"1",name:"Anna Jonson", salary:"700", increase:true, rise:false},
         {id:"2",name:"Sava Brown", salary:"1400", increase:false, rise:false},
       ],
+      text:"",
+      filter:""
     }
   }
   deleteItem=(id)=>{
@@ -78,20 +80,52 @@ class App extends Component{
       })
     }))
   }
+  searchText = (items, text)=>{
+    if(text.length === 0){
+      return items
+    }
+    return items.filter(el=>el.name.indexOf(text) > -1)
+  }
+  //для поднятия событий 
+  updateInput = (text)=>{
+    this.setState({
+      text:text, //меняю состояние текста в app присваивая ему текст из другой компоненты
+    })
+  }
+  //метод для поднятия состояния, чтобі передать фильтр в state
+  updateFilter = (filter)=>{
+    this.setState({
+      filter:filter, //меняю состояние текста в app присваивая ему текст из другой компоненты
+    })
+    console.log("filter "+filter)
+  }
+  filter = (items,filter)=>{
+    if(filter === 'increase'){
+      return items.filter(el=>el.increase === true)
+    }
+    else if (filter === 'moreThen1000'){
+      return items.filter(el=>el.salary>1000)
+    }
+    else{
+      return items
+    }
+  }
   render(){
-    const {data} = this.state;
+    const {data, text, filter} = this.state;
     let length = data.length;
     let increaseLength = data.filter(el=>el.increase).length;
+    let visibleData = this.searchText(data, text);
+    let filterData = this.filter(visibleData, filter);
     return(
       <div className="app">
       <AppInfo countLength = {length} increaseLength = {increaseLength}/>
 
       <div className="search-panel">
-          <SearchPanel/>
-          <AppFilter/>
+          <SearchPanel updateInput = {this.updateInput}/>
+          <AppFilter updateFilter = {this.updateFilter} />
       </div>
       
-      <EmployeesList data={data} onDeleteApp ={this.deleteItem} countProp = {this.countProps}/>
+      <EmployeesList data={filterData} onDeleteApp ={this.deleteItem} countProp = {this.countProps}/>
       <EmployeesAddForm addNewEmployee = {this.addNewEmployee}/>
   </div>
     )
