@@ -15,7 +15,7 @@ class App extends Component{
         {id:"2",name:"Sava Brown", salary:"1400", increase:false, rise:false},
       ],
       text:"",
-      filter:""
+      filter:"all"
     }
   }
   deleteItem=(id)=>{
@@ -92,12 +92,12 @@ class App extends Component{
       text:text, //меняю состояние текста в app присваивая ему текст из другой компоненты
     })
   }
+  
   //метод для поднятия состояния, чтобі передать фильтр в state
   updateFilter = (filter)=>{
     this.setState({
       filter:filter, //меняю состояние текста в app присваивая ему текст из другой компоненты
     })
-    console.log("filter "+filter)
   }
   filter = (items,filter)=>{
     if(filter === 'increase'){
@@ -110,6 +110,9 @@ class App extends Component{
       return items
     }
   }
+  // changeSalary = (text)=>{
+  //   console.log(text)
+  // }
   render(){
     const {data, text, filter} = this.state;
     let length = data.length;
@@ -122,10 +125,11 @@ class App extends Component{
 
       <div className="search-panel">
           <SearchPanel updateInput = {this.updateInput}/>
-          <AppFilter updateFilter = {this.updateFilter} />
+          <AppFilter updateFilter = {this.updateFilter} filter ={filter} />
       </div>
       
-      <EmployeesList data={filterData} onDeleteApp ={this.deleteItem} countProp = {this.countProps}/>
+      <EmployeesList data={filterData} onDeleteApp ={this.deleteItem} countProp = {this.countProps} 
+      />
       <EmployeesAddForm addNewEmployee = {this.addNewEmployee}/>
   </div>
     )

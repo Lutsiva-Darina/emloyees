@@ -1,12 +1,8 @@
 
 import './employees-list-item.css';
 const EmployeesListItem = (props)=>{
-    
-    
         let className="list-group-item d-flex justify-content-between";
         const {name, salary, onDeleteList, countProp, increase, rise} = props;
-        // const {increase, like} = this.state;
-        
         if(increase){
             className+=" increase"
         }
@@ -14,10 +10,11 @@ const EmployeesListItem = (props)=>{
             className+=" like"
             console.log("rise");
         }
+        
         return(
             <li className={className}>
             <span className="list-group-item-label" onClick={countProp} data-toggle="rise"> {name}</span>
-            <input type="text" className="list-group-item-input" defaultValue={salary+'$'}/>
+            <input type="text" className="list-group-item-input" defaultValue={salary+'$'} />
             <div className='d-flex justify-content-center align-items-center'>
                 <button type="button"
                     className="btn-cookie btn-sm "

@@ -1,34 +1,35 @@
-import { Component } from "react";
+
 import "./app-filter.css";
-class AppFilter extends Component{
-    constructor(props){
-        super(props)
-        this.state={
-            filter:""
-        }
-    }
-    filterClick = (e)=>{
+const  AppFilter =(props)=>{
+    let buttons = [
+        {name:"all", label:"Все сотрудники"},
+        {name:"increase", label:"На повышение"},
+        {name:"moreThen1000", label:"З/П больше 1000$"},
+    ]
+    const filterClick = (e)=>{
         let currentFilter = e.currentTarget.getAttribute("data-toggle");
-        console.log(currentFilter);
-        this.props.updateFilter(currentFilter);
+        props.updateFilter(currentFilter);
     }
-    render(){
+    const masButtons = buttons.map(el=>{
+        let active = props.filter === el.name;
+        const clazz = active ? "btn-light" : "btn-outline-light";
+        return(
+                <button type="button"
+                    className={`btn ${clazz}`} 
+                    data-toggle = {el.name} 
+                    key = {el.name} 
+                    onClick={filterClick} >
+                    {el.label}
+                </button>
+        )
+    })
+
+        // console.log(clazz);
         return(
             <div className="btn-group">
-            <button type="button"
-                    className="btn btn-light" data-toggle = "all" onClick={this.filterClick}>
-                    Все сотрудники
-            </button>
-            <button type="button"
-                    className="btn btn-outline-light" data-toggle = "increase" onClick={this.filterClick}>
-                    На повышение
-            </button>
-            <button type="button"
-                    className="btn btn-outline-light" data-toggle = "moreThen1000" onClick={this.filterClick}>
-                    З/П больше 1000$
-            </button>
+            {masButtons}
         </div> 
-        )
-    }
+    )
 }
+
 export default AppFilter;
